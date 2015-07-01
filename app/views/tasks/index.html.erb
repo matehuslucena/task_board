@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<%= label_tag "Board"%>
+<%= select_tag :board_id, options_from_collection_for_select(@boards, "id", "name")%>
+
+<h1>Listing Tasks</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Priority</th>
+      <th>Status</th>
+      <th>Board</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.priority %></td>
+        <td><%= task.status_id %></td>
+        <td><%= task.board.name %></td>
+        <td class="acoes"> <%= link_to 'Show', task, :class => "btn btn-primary" %></td>
+        <td class="acoes"><%= link_to 'Edit', edit_task_path(task), :class => "btn btn-primary" %></td>
+        <td class="acoes"><%= link_to 'Destroy', task, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
