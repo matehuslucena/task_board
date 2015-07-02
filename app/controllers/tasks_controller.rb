@@ -3,35 +3,58 @@ class TasksController < ApplicationController
 
   # GET /tasks
   # GET /tasks.json
-  def index
-    @tasks = Task.all
-    @boards = Board.all
+  #def index
+  #  p session[:board]
+  #  unless session[:board].nil?
+  #    @tasks = Task.where(board_id: session[:board])
+  #    get_boards_by_user
+  # else
+  #    get_tasks_by_board
+  #    get_boards_by_user
+  #  end
+  #end
+
+  def index 
+    respond_to do |format|
+      format.html do
+        get_tasks_by_board
+        get_boards_by_user
+      end
+      format.js do
+        @tasks = Task.where(board_id: session[:board])
+      end
+      format.json do
+        @tasks = Task.where(board_id: session[:board])
+        render json: @tasks
+      end
+    end
   end
 
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @boards = get_boards_by_user
+    get_boards_by_user
   end
 
   # GET /tasks/new
   def new
     @task = Task.new
     @status = Status.all
-    @boards = get_boards_by_user
+    get_boards_by_user
   end
 
   # GET /tasks/1/edit
   def edit
+    @task = Task.find_by_id(params[:id])
     @status = Status.all
-    @boards = get_boards_by_user
+    get_boards_by_user
   end
 
   # POST /tasks
   # POST /tasks.json
   def create
     @task = Task.new(task_params)
-
+    @task.user_id = current_user.id
     respond_to do |format|
       if @task.save
         format.html { redirect_to @task, notice: 'Task was successfully created.' }
@@ -42,6 +65,7 @@ class TasksController < ApplicationController
       end
     end
   end
+
 
   # PATCH/PUT /tasks/1
   # PATCH/PUT /tasks/1.json
@@ -67,6 +91,11 @@ class TasksController < ApplicationController
     end
   end
 
+  def filter
+    session[:board] = params[:board_id]
+    redirect_to tasks_path
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
@@ -79,6 +108,14 @@ class TasksController < ApplicationController
     end
 
     def get_boards_by_user
-      Board.find_by_user_id(current_user.id)
+      @boards = Board.where(user_id: current_user.id)
+    end
+
+    def get_tasks_by_board
+      @tasks = if params[:board_id]
+          Task.find_by_board_id(params[:board_id])
+        else
+          Task.all.where(user_id: current_user.id)
+        end
     end
 end

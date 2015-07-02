@@ -1,5 +1,8 @@
-Rails.application.routes.draw do
-  root to: "tasks#index" 
+Rails.application.routes.draw do 
+
+  root to: "tasks#index"
+
+  post "/tasks/:board_id", to: "tasks#filter"
 
   devise_for :users
   resources :boards

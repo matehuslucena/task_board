@@ -1,4 +1,6 @@
-json.array!(@tasks) do |task|
-  json.extract! task, :id, :title, :priority, :status_id
-  json.url task_url(task, format: :json)
+json.tasks @tasks do |task|
+	json.title task.title
+	json.priority task.priority
+	json.status task.status.name
+	json.board task.board.name
 end

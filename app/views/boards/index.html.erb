@@ -2,7 +2,7 @@
 
 <h1>Listing Boards</h1>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Name</th>
@@ -14,15 +14,18 @@
     <% @boards.each do |board| %>
       <tr>
         <td><%= board.name %></td>
-        <td><%= link_to 'Show', board %></td>
-        <td><%= link_to 'Edit', edit_board_path(board) %></td>
-        <td><%= link_to 'Destroy', board, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td class="acoes"><%= link_to 'Show', board %></td>
+        <td class="acoes"><%= link_to 'Edit', edit_board_path(board) %></td>
+        <td class="acoes"><%= link_to 'Destroy', board, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Board', new_board_path %>
-<%= link_to 'Back', tasks_path %>
+<% if user_signed_in?%>
+  <%= link_to 'New Board', new_board_path, :class => "btn btn-success"  %>
+  <%= link_to 'Back', tasks_path, :class => "btn btn-warning"   %><br><br>
+<% else%>
+  <%= link_to 'Back', new_task_path, :class => "btn btn-warning"   %><br><br>
+<% end %>

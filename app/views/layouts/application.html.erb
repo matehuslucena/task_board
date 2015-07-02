@@ -29,8 +29,8 @@
                           <div class="brand">TASK BOARD</div>
                             <ul class="nav nav-pills">
                               <li class="active"><a href="/">Home</a></li>
-                              <li class="active"><a href="/tasks/new">New Task</a></li>
-                              <li class="active"><a href="/boards/new">New Board</a></li>
+                              <li class="active"><a href="/tasks">Task</a></li>
+                              <li class="active"><a href="/boards">Board</a></li>
                             </ul>
                       </div>
                     </div>
@@ -41,6 +41,8 @@
                 <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'btn btn-danger'  %>
               <% else %>
                 <%= yield %>
+  
+                <%= link_to "Show Boards", boards_path%>
               <% end %>
             </div>
           </div>
@@ -49,5 +51,7 @@
         </div>
       </div> <!--! end of .container -->
     </div> <!--! end of #main -->
+
+   
   </body>
 </html>
