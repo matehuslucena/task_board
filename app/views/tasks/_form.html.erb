@@ -26,6 +26,6 @@
     <%= f.select :board_id, options_from_collection_for_select(@boards, 'id', 'name')  %><br>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit 'Create', :class =>  'btn btn-success' %>
   </div>
 <% end %>

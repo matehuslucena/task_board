@@ -5,5 +5,5 @@
   <%= @board.name %>
 </p>
 
-<%= link_to 'Edit', edit_board_path(@board) %> |
-<%= link_to 'Back', boards_path %>
+<%= link_to 'Edit', edit_board_path(@board), :class => "btn btn-success"  %>
+<%= link_to 'Back', boards_path, :class => "btn btn-warning"  %><br><br>
