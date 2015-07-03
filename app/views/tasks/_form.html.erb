@@ -20,12 +20,10 @@
     <%= f.text_field :priority %>
   </div>
   <div class="field">
-    <% statuses = options_from_collection_for_select(@status, 'id', 'name') %>
-    <%= f.select :status_id,  statuses %><br>
+    <%= f.select :status_id, options_from_collection_for_select(@status, 'id', 'name', selected: @task.status_id)%><br>
   </div>
   <div class="field">
-    <% boards = options_from_collection_for_select(@boards, 'id', 'name') %>
-    <%= f.select :board_id,  boards %><br>
+    <%= f.select :board_id, options_from_collection_for_select(@boards, 'id', 'name')  %><br>
   </div>
   <div class="actions">
     <%= f.submit %>

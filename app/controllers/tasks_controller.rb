@@ -1,27 +1,12 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
-  # GET /tasks
-  # GET /tasks.json
-  #def index
-  #  p session[:board]
-  #  unless session[:board].nil?
-  #    @tasks = Task.where(board_id: session[:board])
-  #    get_boards_by_user
-  # else
-  #    get_tasks_by_board
-  #    get_boards_by_user
-  #  end
-  #end
-
   def index 
     respond_to do |format|
       format.html do
         get_tasks_by_board
         get_boards_by_user
-      end
-      format.js do
-        @tasks = Task.where(board_id: session[:board])
+        get_status
       end
       format.json do
         @tasks = Task.where(board_id: session[:board])
@@ -39,14 +24,14 @@ class TasksController < ApplicationController
   # GET /tasks/new
   def new
     @task = Task.new
-    @status = Status.all
+    get_status
     get_boards_by_user
   end
 
   # GET /tasks/1/edit
   def edit
-    @task = Task.find_by_id(params[:id])
-    @status = Status.all
+    set_task
+    get_status
     get_boards_by_user
   end
 
@@ -66,18 +51,15 @@ class TasksController < ApplicationController
     end
   end
 
-
   # PATCH/PUT /tasks/1
   # PATCH/PUT /tasks/1.json
   def update
-    respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to @task, notice: 'Task was successfully updated.' }
-        format.json { render :show, status: :ok, location: @task }
-      else
-        format.html { render :edit }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    if @task.update(task_params)
+      format.html { redirect_to @task, notice: 'Task was successfully updated.' }
+      format.json { render :show, status: :ok, location: @task }
+    else
+      format.html { render :edit }
+      format.json { render json: @task.errors, status: :unprocessable_entity }
     end
   end
 
@@ -94,6 +76,14 @@ class TasksController < ApplicationController
   def filter
     session[:board] = params[:board_id]
     redirect_to tasks_path
+  end
+
+  def update_ajax
+    @task = Task.find(params[:task_id])
+    @task.status_id = params[:status_id]
+    @task.save
+    flash[:notice] = 'Successfully checked in'
+    redirect_to @task
   end
 
   private
@@ -117,5 +107,10 @@ class TasksController < ApplicationController
         else
           Task.all.where(user_id: current_user.id)
         end
+        p @tasks
+    end
+
+    def get_status
+      @status = Status.all
     end
 end

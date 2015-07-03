@@ -4,6 +4,10 @@ Rails.application.routes.draw do
 
   post "/tasks/:board_id", to: "tasks#filter"
 
+  get "/boards/all", to: "boards#all"
+
+  post "/tasks/:status_id/:task_id", to: "tasks#update_ajax"
+
   devise_for :users
   resources :boards
   resources :tasks

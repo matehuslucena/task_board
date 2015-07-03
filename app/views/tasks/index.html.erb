@@ -21,7 +21,7 @@
       <tr>
         <td><%= task.title %></td>
         <td><%= task.priority %></td>
-        <td><%= task.status.name %></td>
+        <td><%= select_tag :status_id, options_from_collection_for_select(@status, 'id', 'name', selected: task.status_id),                 onchange:"update_task(this,"+task.id.to_s+");" %></td>
         <td><%= task.board.name %></td>
         <td class="acoes"> <%= link_to 'Show', task, :class => "btn btn-primary" %></td>
         <td class="acoes"><%= link_to 'Edit', edit_task_path(task), :class => "btn btn-primary" %></td>

@@ -1,4 +1,5 @@
 class BoardsController < ApplicationController
+  skip_before_action :authenticate_user! , :only => [:all, :index]
   before_action :set_board, only: [:show, :edit, :update, :destroy]
 
   # GET /boards
@@ -59,6 +60,11 @@ class BoardsController < ApplicationController
       format.html { redirect_to boards_url, notice: 'Board was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def all
+    @boards = Board.all.where(public: true)
+    render :index
   end
 
   private
